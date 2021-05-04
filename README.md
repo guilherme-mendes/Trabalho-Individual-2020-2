@@ -11,89 +11,66 @@
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=guilherme-mendes_Trabalho-Individual-2020-2_client&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=guilherme-mendes_Trabalho-Individual-2020-2_client)
 
 
-A Gestão de Configuração de Software é parte fundamental no curso de GCES, e dominar os conhecimentos de configuração de ambiente, containerização, virtualização, integração e deploy contínuo tem se tornado cada vez mais necessário para ingressar no mercado de trabalho.
+| Aluno | Matrícula |
+| --- | --- |
+| Guilherme Mendes Pereira | 17/0129411 |
 
-Para exercitar estes conhecimentos, você deverá aplicar os conceitos estudados ao longo da disciplina no produto de software contido neste repositório.
-
-O sistema se trata de uma aplicação Web, cuja funcionalidade consiste numa lista de tarefas, que é composta de:
-- Front-end escrito em Javascript, utilizando os frameworks Vue.JS e Quasar;
-- Back-end escrito em Django REST;
-- Banco de Dados PostgreSQL;
-
-Para executar a aplicação em sua máquina, basta seguir o passo-a-passo descrito no arquivos s README das pastas [api](./api/README.md) e [client](./client/README.md).
-
-
-## Critérios de avaliação
 
 ### 1. Containerização
 
-A aplicação deverá ter seu ambiente completamente containerizado. Desta forma, cada subsistema (Front-end, Back-end e Banco de Dados) deverá ser isolado em um container individual.
+A containerização de toda aplicação se deu a partir dos três Dockerfiles do backend, frontend e banco de dados:
+* [Dockerfile api](./api/Django.Dockerfile)
+* [Dockerfile client](./client/Dockerfile)
+* [Dockerfile postgress](./api/db/Postgresql.Dockerfile)
 
-Deverá ser utilizado um orquestrador para gerenciar comunicação entre os containers, o uso de credenciais, networks, volumes, entre outras configurações necessárias para a correta execução da aplicação.
+Já a orquestração dos containers foi feita utilizando o docker-compose, com a configuração descrita no arquivo [docker-compose.yaml](./docker-compose.yaml)
 
-Para realizar esta parte do trabalho, recomenda-se a utilização das ferramentas:
+Comando para execução da aplicação:
+```
+docker-compose up --build
+```
 
-- Docker versão 17.04.0+
-- Docker Compose com sintaxe na versão 3.2+
+O resuldado do comando deve ser o seguinte:
 
-### 2. Integração contínua
+![docker-compose-image](./client/src/assets/screen.png)
 
-Você deverá criar um 'Fork' deste repositório, onde será desenvolvida sua solução. Nele, cada commit submetido deverá passar por um sistema de integração contínua, realizando os seguintes estágios:
+Após a build, o app pode ser acessado no `localhost:8080/`.
 
-- Build: Construção completa do ambiente;
-- Testes: Os testes automatizados da aplicação devem ser executados;
-- Análise Estática de código: Deverá ser realizada a integração com algum serviço externo de análise estática de código fonte (Ex: Code Climate), análise de folhas de estilo (Stylesheet / Linter);
-- Análise de cobertura de testes: Devera será ser incluida também uma ferramenta para apontar a métrica de cobertura de testes.
+### 2. Integração contínua, Coverage e Deploy Contínuo
 
-O sistema de integração contínua deve exibir as informações de cada pipeline, e impedir que trechos de código que não passem corretamente por todo o processo sejam adicionados à 'branch default' do repositório.
+A integração contínua foi feita utilizando o GitHub Actions e foram criados três workflows:
+* [API-CI](./.github/workflows/api_ci.yml)
 
-Para esta parte do trabalho, poderá ser utilizada qualquer tecnologia ou ferramenta que o aluno desejar, como GitlabCI, Actions, TravisCI, CircleCI, Jenkins, CodeClimate, entre outras.
+![api-ci](./client/src/assets/api.png)
 
-### 3. Deploy contínuo
+* Build
+* Code quality<br>
+[SonarCloud](https://sonarcloud.io/dashboard?id=guilherme-mendes_Trabalho-Individual-2020-2_api)<br>
+[CodeClimate](https://codeclimate.com/github/guilherme-mendes/Trabalho-Individual-2020-2)<br>
+[CodeCov](https://app.codecov.io/gh/guilherme-mendes/Trabalho-Individual-2020-2)<br>
+[Pylint](https://github.com/guilherme-mendes/Trabalho-Individual-2020-2/runs/2503225056?check_suite_focus=true)
 
-Também deve ser feita a configuração de um pipeline de modo a publicar a aplicação automaticamente, sempre que um novo trecho de código seja integrado à branch default.
+* Deploy<br>
+[DockerHub](https://hub.docker.com/repository/docker/guilhermemp/gces-trabalho-individual-2020-2)
 
-Assim como na Integração Contínua, poderá ser utilizado qualquer servidor de cloud que o aluno desejar, como DigitalOcean, Heroku, AWS, entre outros.
+Comando para execução do deploy da imagem no DockerHub:
+```
+docker push guilhermemp/gces-trabalho-individual-2020-2:tagname
+```
 
-### 4. Kubernets (extra)
+* [CLIENT-CI](./.github/workflows/client_ci.yml)
 
-Caso cumpra todos os requisitos descritos acima, será atribuída uma pontuação extra para o aluno que configure o deploy com Kubernets.
+![api-ci](./client/src/assets/api.png)
 
-## Nota
+* Build
 
-A nota de cada aluno será a soma dos itens abaixo que serão avaliados tanto de forma quantitativa (se foi realizado a implementação + documentação), quanto qualitativamente (como foi implementado, entendimento dos conceitos na prática, complexidade da solução). Faça os commits atômicos, bem documentados, completos a fim de facilitar o entendimento e avaliação do seu trabalho. Lembrando que esse trabalho é individual. 
+* Code quality<br>
+[SonarCloud](https://sonarcloud.io/dashboard?id=guilherme-mendes_Trabalho-Individual-2020-2_client)<br>
+[CodeClimate](https://sonarcloud.io/dashboard?id=guilherme-mendes_Trabalho-Individual-2020-2_client)<br>
 
-Os Itens de avaliação são (cada item tem peso 1 na nota final de 0 - 10):
+* [COV-CI](./.github/workflows/cov.yml)
 
-**1. Containerização**
+![cov-ci](./client/src/assets/cov.png)
 
-- Container do Back-end
-- Container do Front-end
-- Container do Banco de Dados
-- Automação entre os containers (Docker-compose)
-
-**2. Integração contínua (Front-end)**
-
-- Build: Construção completa do ambiente
-- Testes: Os testes automatizados da aplicação devem ser executados
-- Coleta de métricas: Deverá ser realizada a integração com algum serviço externo de coleta de métricas de qualidade;
-
-Regras de avaliação: O sistema de integração contínua deve exibir as informações de cada pipeline, e impedir que trechos de código que não passem corretamente por todo o processo sejam adicionados à 'branch default' do repositório.
-
-**3. Integração contínua (Back-end)**
-
-- Build: Construção completa do ambiente
-- Testes: Os testes automatizados da aplicação devem ser executados
-- Coleta de métricas: Deverá ser realizada a integração com algum serviço externo de coleta de métricas de qualidade;
-
-Regras de avaliação: O sistema de integração contínua deve exibir as informações de cada pipeline, e impedir que trechos de código que não passem corretamente por todo o processo sejam adicionados à 'branch default' do repositório.
-
-**4. Coverage (Extra)**
-
-Caso cumpra todos os requisitos obrigatórios descritos acima, será atribuída uma pontuação extra para o aluno que configure sua pipeline de modo a coletar a porcentagem de cobertura de testes na aplicação (Back end e Front end).
-
-**5. Deploy contínuo (Extra)**
-
-Caso cumpra todos os requisitos obrigatórios descritos acima, será atribuída uma pontuação extra para o aluno que configure sua pipeline de modo a publicar a aplicação automaticamente, sempre que um novo trecho de código seja integrado à branch default.
-
-
+* Coverage 97% <br>
+[CodeCov](https://app.codecov.io/gh/guilherme-mendes/Trabalho-Individual-2020-2)<br>
