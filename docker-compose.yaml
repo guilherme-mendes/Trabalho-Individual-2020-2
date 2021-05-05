@@ -8,30 +8,19 @@ services:
     command: bash django-entrypoint.sh
     volumes: 
       - ./api:/api
+    env_file:
+      - .env
     ports:
       - "8000:8000"
     depends_on:
       - db  
-    environment:
-      - DB_HOST=db
-      - DB_NAME=myproject
-      - DB_USER=myuser
-      - DB_PASSWORD=password
   
   db:
-    image: postgres
+    image: postgres:13
     ports:
       - "5432:5432"
-    environment: 
-      - POSTGRES_DB=myproject
-      - POSTGRES_USER=myuser
-      - POSTGRES_PASSWORD=password
-      - PGDATA=/var/lib/postgresql/data/pgdata
-    build:
-      context: api/db
-      dockerfile: Postgresql.Dockerfile
-    volumes:
-      - ./data/db:/var/lib/postgresql/data
+    env_file:
+      - .env
 
   client:
     build:

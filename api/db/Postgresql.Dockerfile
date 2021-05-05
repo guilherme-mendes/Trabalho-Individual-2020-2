@@ -5,3 +5,5 @@ WORKDIR /db
 COPY init_db.sql /docker-entrypoint-initdb.d/
 
 COPY . .
+
+EXPOSE 5432
