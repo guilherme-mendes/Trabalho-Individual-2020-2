@@ -8,6 +8,10 @@ RUN yarn install
 
 RUN yarn global add @quasar/cli
 
+RUN yarn add express serve-static connect-history-api-fallback
+
 COPY . .
 
-CMD [ "yarn", "dev" ]
+RUN yarn build
+
+CMD yarn start
