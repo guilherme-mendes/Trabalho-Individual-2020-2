@@ -36,7 +36,7 @@ O resuldado do comando deve ser o seguinte:
 
 Após a build, o app pode ser acessado no `localhost:8080/`.
 
-### 2. Integração contínua, Coverage e Deploy Contínuo
+### 2. Integração contínua, Coverage 
 
 A integração contínua foi feita utilizando o GitHub Actions e foram criados três workflows:
 * [API-CI](./.github/workflows/api_ci.yml)
@@ -51,7 +51,8 @@ A integração contínua foi feita utilizando o GitHub Actions e foram criados t
 [Pylint](https://github.com/guilherme-mendes/Trabalho-Individual-2020-2/runs/2503225056?check_suite_focus=true)
 
 * Deploy<br>
-[DockerHub](https://hub.docker.com/repository/docker/guilhermemp/gces-trabalho-individual-2020-2)
+[DockerHub](https://hub.docker.com/repository/docker/guilhermemp/gces-trabalho-individual-2020-2)<br>
+[Heroku](https://gces-trab-client.herokuapp.com/)
 
 Comando para execução do deploy da imagem no DockerHub:
 ```
@@ -74,3 +75,9 @@ docker push guilhermemp/gces-trabalho-individual-2020-2:tagname
 
 * Coverage 97% <br>
 [CodeCov](https://app.codecov.io/gh/guilherme-mendes/Trabalho-Individual-2020-2)<br>
+
+
+### 3. Deploy Contínuo
+
+* Deploy no heroku diponível no seguinte link: <br> 
+https://gces-trab-client.herokuapp.com/
